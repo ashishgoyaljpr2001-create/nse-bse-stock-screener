@@ -1,12 +1,23 @@
-# Free Loss + Positive CFO Stock Screener
+# NSE loss-making / positive CFO screener — V2
 
-Run:
+Streamlit Community Cloud app. Automatically retrieves the NSE equity symbol universe from NSE's published `EQUITY_L.csv`, then screens financial statements using free Yahoo Finance data.
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
+## Deployment
 
-Enter NSE tickers with `.NS` or BSE tickers with `.BO`, or upload a CSV with a `Symbol` column. Click **Run free online screening**. The application retrieves annual income and cash flow statements via the unofficial yfinance Yahoo Finance client, checks negative PAT and positive CFO for each of the selected periods, and exports matches to Excel.
+Upload **app.py**, **requirements.txt**, and **README.md** to the root of your existing GitHub repository (replace older versions). Streamlit Cloud should redeploy automatically. Otherwise choose **Reboot app** from Streamlit's app management menu.
 
-**Limitations:** Free data can be incomplete, rate-limited or inaccurate. Fiscal year-ends and consolidated vs standalone bases are not assured. The screener checks only supplied symbols; it does not automatically discover all listed companies. Confirm all matches against published exchange filings.
+## Use
+
+1. Click **Load all NSE equity symbols** (or upload a CSV containing `Symbol`).
+2. Set the number of consecutive years, minimum CFO and batch size.
+3. Click **Scan next batch** repeatedly. Results accumulate within the current browser session; download the CSV regularly. A session reset or app restart loses progress.
+4. Export matches or full audit CSV.
+
+## Limitations
+
+- This is **not** a single unattended scan of the entire market. Batches reduce rate-limit and Streamlit session timeout risk.
+- NSE's published list may be temporarily inaccessible from Streamlit Cloud; use a symbol CSV fallback.
+- Yahoo Finance may omit annual statements, change field names, or report standalone rather than consolidated financials.
+- The screener requires aligned year-end dates, and tests the latest available annual periods, not necessarily FY2023–FY2026.
+- Free Yahoo Finance data frequently contains no more than four annual periods.
+- A missing-data result is not a non-match; verify all candidates with audited exchange filings.
